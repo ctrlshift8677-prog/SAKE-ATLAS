@@ -1,0 +1,7 @@
+# Netlify 會依照這個檔案自動建置網站：安裝套件 → 執行 build.py → 發布 dist/
+[build]
+  command = "pip install -r requirements.txt && python3 build.py"
+  publish = "dist"
+
+[build.environment]
+  PYTHON_VERSION = "3.11"
