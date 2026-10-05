@@ -874,9 +874,8 @@ def page(*, title, desc, depth, body, path, nav="", og_image="", body_class="", 
 <meta property="og:type" content="website"><meta property="og:site_name" content="{SITE['name']}">
 <meta property="og:title" content="{esc(full_title)}"><meta property="og:description" content="{esc(desc)}">
 <meta property="og:locale" content="zh_TW">{head_extra}
-<meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f2f1eb" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#161c1a" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light only">
+<meta name="theme-color" content="#f2f1eb">
 <link rel="icon" href="{base}assets/favicon.svg" type="image/svg+xml">
 {FONTS}
 <link rel="stylesheet" href="{base}assets/site.css">
@@ -1924,7 +1923,7 @@ def build_preview(out_path):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{SITE["name"]}｜{SITE["tagline"]}（預覽）</title>
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="light only">
 <link rel="icon" href="{esc(favicon)}">
 {FONTS}
 <style>{css}</style>
