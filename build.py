@@ -28,6 +28,21 @@ SITE = {
     "contact_email": "",
 }
 
+# 在 GitHub Actions 上建置時，網址與路徑前綴會自動帶入
+import os as _os
+if _os.environ.get("SITE_URL"):
+    SITE["url"] = _os.environ["SITE_URL"].rstrip("/")
+
+
+def site_base_path():
+    """網站所在的路徑前綴，例如 GitHub Pages 的 /SAKE-ATLAS/。"""
+    bp = _os.environ.get("SITE_BASE_PATH")
+    if bp is None and SITE["url"]:
+        bp = re.sub(r"^https?://[^/]+", "", SITE["url"])
+    bp = "/" + (bp or "").strip("/")
+    return bp if bp.endswith("/") else bp + "/"
+
+
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data"
 STATIC = ROOT / "static"
@@ -1773,9 +1788,10 @@ def build_about(items, prefs, meta):
 
 
 def build_404():
+    b = site_base_path()
     body = f'''<article class="guide"><header class="guide-head"><h1>這一頁不在圖鑑裡</h1>
-    <p>網址可能打錯了，或這款酒的頁面已經移動。可以回到<a href="/">首頁的地圖</a>，或從<a href="/sake/">全部酒款</a>重新找。</p></header></article>'''
-    return page(title="找不到頁面", desc="找不到這一頁。", depth=0, body=body, path="404.html", base="/")
+    <p>網址可能打錯了，或這款酒的頁面已經移動。可以回到<a href="{b}">首頁的地圖</a>，或從<a href="{b}sake/">全部酒款</a>重新找。</p></header></article>'''
+    return page(title="找不到頁面", desc="找不到這一頁。", depth=0, body=body, path="404.html", base=b)
 
 
 # ───────────────────────── 單檔預覽版 ─────────────────────────
