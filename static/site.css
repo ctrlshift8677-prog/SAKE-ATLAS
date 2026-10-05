@@ -29,56 +29,8 @@
   --top-h: 64px;
   --pad: clamp(16px, 4vw, 56px);
   --max: 1320px;
-  color-scheme: light dark;
+  color-scheme: light;
 }
-:root[data-theme="light"] { color-scheme: light; }
-:root[data-theme="dark"] { color-scheme: dark; }
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #161c1a;
-    --paper-2: #1f2725;
-    --paper-3: #29322f;
-    --ink: #ece9df;
-    --ink-2: #c0c3b9;
-    --ink-3: #a3aaa1;
-    --rule: #3a4441;
-    --rule-2: #2c3532;
-    --shu: #b8472f;
-    --shu-ink: #fff4ec;
-    --shu-soft: #3b2622;
-    --enji: #eba597;
-    --ash: #39433f;
-    --rice: #8e8572;
-    --rice-core: #ddd7c8;
-    --hosho: url("hosho-dark.webp");
-    --label: #222a28;
-    --shadow: 0 1px 1px rgb(0 0 0 / .3), 0 16px 30px -18px rgb(0 0 0 / .75);
-    --shadow-lift: 0 2px 2px rgb(0 0 0 / .3), 0 24px 40px -20px rgb(0 0 0 / .8);
-  }
-}
-:root[data-theme="dark"] {
-    --paper: #161c1a;
-    --paper-2: #1f2725;
-    --paper-3: #29322f;
-    --ink: #ece9df;
-    --ink-2: #c0c3b9;
-    --ink-3: #a3aaa1;
-    --rule: #3a4441;
-    --rule-2: #2c3532;
-    --shu: #b8472f;
-    --shu-ink: #fff4ec;
-    --shu-soft: #3b2622;
-    --enji: #eba597;
-    --ash: #39433f;
-    --rice: #8e8572;
-    --rice-core: #ddd7c8;
-    --hosho: url("hosho-dark.webp");
-    --label: #222a28;
-    --shadow: 0 1px 1px rgb(0 0 0 / .3), 0 16px 30px -18px rgb(0 0 0 / .75);
-    --shadow-lift: 0 2px 2px rgb(0 0 0 / .3), 0 24px 40px -20px rgb(0 0 0 / .8);
-}
-
 *, *::before, *::after { box-sizing: border-box; }
 html {
   background: var(--paper);
@@ -183,12 +135,6 @@ section h2, .sec-head h2 { font: 400 clamp(26px, 3vw, 36px)/1.3 var(--f-brush); 
   letter-spacing: 0;
   padding: .1em;
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .seal { mix-blend-mode: normal; } }
-:root[data-theme="dark"] .seal { mix-blend-mode: normal; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .atlas-map { --sea: #a9c1cc; } :root:not([data-theme="light"]) .leaf-scene { filter: invert(.88) hue-rotate(180deg); } }
-:root[data-theme="dark"] .atlas-map { --sea: #a9c1cc; }
-:root[data-theme="dark"] .leaf-scene { filter: invert(.88) hue-rotate(180deg); }
-
 /* ───────── 御朱印頁（卡片封面） ───────── */
 .g-page {
   position: absolute; inset: 0;
@@ -336,10 +282,6 @@ section h2, .sec-head h2 { font: 400 clamp(26px, 3vw, 36px)/1.3 var(--f-brush); 
   content: ""; position: absolute; inset: 0; z-index: -1;
   background: var(--paper) var(--wash) center / cover no-repeat;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .spread::before { filter: invert(1) hue-rotate(180deg) brightness(.62) saturate(.7) contrast(.92); }
-}
-:root[data-theme="dark"] .spread::before { filter: invert(1) hue-rotate(180deg) brightness(.62) saturate(.7) contrast(.92); }
 .spread-map { position: relative; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
 .atlas-map { width: 100%; height: auto; max-height: calc(100svh - var(--top-h) - 110px); overflow: visible; view-transition-name: atlas; }
 .spread-gutter { visibility: hidden; }
