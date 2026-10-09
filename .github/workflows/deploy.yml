@@ -1,0 +1,78 @@
+# 每次推送到 main：處理新照片 → 產生網站 → 發布到 GitHub Pages
+name: 建置並發布網站
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:        # 也可以在 Actions 頁面手動按「Run workflow」
+
+permissions:
+  contents: write           # 把處理好的照片存回 repo
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: 安裝套件
+        run: pip install -r requirements.txt
+
+      - id: pages
+        uses: actions/configure-pages@v5
+
+      - name: 建置網站
+        env:
+          SA_CONSUME_PHOTOS: "1"
+          SITE_URL: ${{ steps.pages.outputs.base_url }}   # 例如 https://帳號.github.io/sake-atlas
+        run: |
+          # 網站上的「資料更新日期」＝試算表最後一次上傳的日期
+          export SA_UPDATED="$(git log -1 --format=%cd --date=format:%Y.%m.%d -- data)"
+          python build.py
+
+      - name: 照片對應報告
+        if: always()
+        run: |
+          if [ -f photo-report.txt ]; then
+            { echo "## 照片對應結果"; echo; echo '```'; cat photo-report.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: 把處理好的照片存回 repo
+        run: |
+          git add -A static/images photos
+          if git diff --cached --quiet; then
+            echo "這次沒有新照片"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git commit -m "處理新照片"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
